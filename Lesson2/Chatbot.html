@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script src="javascript.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+
+      const ChatInput = ({chatMessages,setChatMessages}) => {
+        const [inputText, setInputText] = React.useState('');
+        const handleInputChange =(event) => {
+          // e is event object And even.target is given to access the element that triggered the event in here input box.'
+          setInputText(event.target.value);
+        };
+
+        const handleSendMessage = () => {
+          setChatMessages([...chatMessages, {
+            id: crypto.randomUUID(),
+            Message: inputText,
+            sender: "user"
+          }]);
+          setInputText('');
+          
+        
+        };
+        return (
+          <>
+              <input 
+                type="text"
+                name="Chatbot"
+                id="Chatbot" 
+                placeholder="Type your message..." 
+                onChange={handleInputChange}
+                value={inputText}
+                />
+              <button
+                onClick ={handleSendMessage}
+              > Send </button>
+          </>
+        );
+      };
+      const ChatMessage = ({Message, sender}) => {
+        return (
+          <div>
+            {sender === "robot" && (
+              <img src="./Images/robot.png" width="50" height="50" />
+            )}
+            {Message}
+            {sender === "user" && (
+              <img src="./Images/userImage.png" width="50" height="50" />
+            )}
+          </div>
+        )
+      }
+      const ChatMessages = ({chatMessages,setChatMessages}) => {
+          return(
+          <>
+            {chatMessages.map((chatMessages) => (
+                  <ChatMessage 
+                    key={chatMessages.id}
+                    Message={chatMessages.Message} 
+                    sender={chatMessages.sender} 
+                    />
+                ))
+            }
+          </>
+        )
+      }
+      
+      const App = () => {
+        //State hook has 2 parts: 1. variable, 2. function to update the variable!!!
+        //const [chatMessages, setChatMessages] = Array; 
+        // const chatMessages = Array[0];
+        // const setChatMessages = Array[1];
+        const [chatMessages, setChatMessages] = React.useState([
+              {
+                id:'1',
+                Message: "Hello, Chatbot!",
+                sender : "user"            
+              },
+              {
+                id: '2',
+                Message: "Hello! How can I help you?",
+                sender : "robot"
+              },
+              {
+                id: '3',
+                Message: "Can u get me today date!",
+                sender : "user"
+              },
+              {
+                id: '4',
+                Message: "Today is December 11",
+                sender : "robot"
+              }
+            ]
+        );    
+            
+       return (
+        <>
+         <ChatInput 
+          chatMessages={chatMessages} 
+          setChatMessages={setChatMessages} 
+         />
+         <ChatMessages 
+          chatMessages={chatMessages} 
+          setChatMessages={setChatMessages}
+         />
+        </>
+       )
+      }
+      const container = document.querySelector('.js-container');
+      const Root = ReactDOM.createRoot(container);
+      Root.render(<App />);
+    </script>
+  </body>
+</html>
