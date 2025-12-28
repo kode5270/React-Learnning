@@ -1,0 +1,14 @@
+
+.error-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
+  height: 100vh;           /* full viewport height */
+  margin: 0;
+}
+
+
+.error-text{
+    color: rgb(255, 196, 118);
+}
