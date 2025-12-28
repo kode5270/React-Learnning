@@ -1,5 +1,5 @@
 import "./HomePage.css"
-import "./header.css"
+import "../../styles/header.css"
 
 export function HomePage () {
     return (
