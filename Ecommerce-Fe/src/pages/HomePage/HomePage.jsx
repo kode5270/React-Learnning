@@ -32,7 +32,7 @@ export function HomePage () {
                 </div>
                 
                 <div className="product-price">
-                {`${data.priceCents/100}$`}
+                {`${(data.priceCents/100).toFixed(2)}$`}
                 </div>
 
                 <div className="product-quantity-container">
