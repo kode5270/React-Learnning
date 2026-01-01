@@ -1,52 +1,51 @@
-import axios from 'axios';
+
 import "./HomePage.css"
 import { Header } from "../../components/Header/Header"
 import CheckMarkIcon from "../../assets/images/icons/checkmark.png"
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { formatMoney } from "../../utils/money";
 
 
 export function HomePage ({carts}) {
     const [products, setProducts] = useState([]);
 
-    
     useEffect(() => {
         axios.get('http://localhost:3000/api/products')
-            .then((response) => {
-                setProducts(response.data)
-            })
-        
+          .then((response) => {
+              setProducts(response.data)
+          })
     },[])
-    
     return (
+        
     <>
         <title>Ecommerce-project</title>
         <link rel="icon" type="image/png" href="/images/home-favicon.png" />
         <Header carts={carts}/>
         <div className="home-page">
         <div className="products-grid">
-            {products.map((data) => {
+            {products.map((product) => {
                 return(
-                <div className="product-container" key={data.id}>
+                <div className="product-container" key={product.id}>
                 <div className="product-image-container">
                     <img className="product-image"
-                    src={data.image} />
+                    src={product.image} />
                 </div>
 
                 <div className="product-name limit-text-to-2-lines">
-                {data.name}
+                {product.name}
                 </div>
                 
                 <div className="product-rating-container">
                 <img className="product-rating-stars"
-                src={`images/ratings/rating-${data.rating.stars * 10}.png`} />
+                src={`images/ratings/rating-${product.rating.stars * 10}.png`} />
                 <div className="product-rating-count link-primary">
-                {data.rating.count}
+                {product.rating.count}
                 </div>
                 </div>
                 
                 <div className="product-price">
-                {`${(data.priceCents/100).toFixed(2)}$`}
+                {formatMoney(product.priceCents)}
                 </div>
 
                 <div className="product-quantity-container">
