@@ -4,8 +4,9 @@ import { Header } from '../../components/Header/Header'
 import { Link } from 'react-router'
 import BuyAgainIcons from "../../assets/images/icons/buy-again.png"
 import axios from 'axios'
-import { useEffect, useState,Fragment } from 'react'
-import { formatMoney } from '../../utils/money'
+import { useEffect, useState } from 'react'
+import { OrderHeader } from './OrderHeader'
+import  { OrderDetail } from './OrderDetail'
 
 
 export function OrdersPage({ carts }) {
