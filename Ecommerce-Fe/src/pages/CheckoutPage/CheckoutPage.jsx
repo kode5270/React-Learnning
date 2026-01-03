@@ -3,20 +3,23 @@ import axios from 'axios'
 import { CheckoutHeader } from '../../components/CheckoutHeader/CheckoutHeader'
 import './checkoutPage.css'
 import { useEffect, useState } from 'react'
-import CheckoutGrid from './CheckoutGrid'
+import { OrderSummary } from './OrderSummary'
+import { PaymentSummary } from './PaymentSummary'
 
 export function CheckoutPage({ carts }) {
     const [deliveryOptions, setDeliveryOptions] = useState([])
-    const [paymentSummary, setPaymentSummary] = useState(null);
+    const [paymentSummary, setPaymentSummary] = useState(0);
     useEffect(() => {
-        axios.get('/api/delivery-options?expand=estimatedDeliveryTime')
-            .then((response) => {
-                return setDeliveryOptions(response.data);
-            })
-        axios.get('/api/payment-summary')
-            .then((response) => {
-                return setPaymentSummary(response.data);
-            })
+
+        const fetchCheckoutData = async () => {
+            let response = await axios.get('/api/delivery-options?expand=estimatedDeliveryTime')
+            setDeliveryOptions(response.data);
+
+            response = await axios.get('/api/payment-summary');
+            setPaymentSummary(response.data);
+        }
+        fetchCheckoutData()
+
     }, [])
 
     return (
@@ -24,12 +27,16 @@ export function CheckoutPage({ carts }) {
             <title>Checkout</title>
             <link rel="icon" type="image/png" href="/images/cart-favicon.png" />
 
-            <CheckoutHeader />
+            <CheckoutHeader paymentSummary={paymentSummary}/>
 
             <div className="checkout-page">
                 <div className="page-title">Review your order</div>
-                <CheckoutGrid deliveryOptions={deliveryOptions} paymentSummary={paymentSummary} carts={carts}/>
-                
+                <div className="checkout-grid">
+                    <OrderSummary carts={carts} deliveryOptions={deliveryOptions} />
+
+                    <PaymentSummary paymentSummary={paymentSummary} />
+
+                </div>
             </div>
         </>
     )

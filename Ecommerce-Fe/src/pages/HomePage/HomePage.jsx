@@ -9,21 +9,23 @@ export function HomePage({ carts }) {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/products')
-            .then((response) => {
-                setProducts(response.data)
-            })
+        const fetchHomeData = async () => {
+            const response = await axios.get('/api/products')
+
+            setProducts(response.data)
+        }
+        fetchHomeData();
     }, [])
 
     return (
-    
+
         <>
-        <title>Ecommerce-project</title>
-        <link rel="icon" type="image/png" href="/images/home-favicon.png" />
-        <Header carts={carts}/>
-        <div className="home-page">
-            <ProductsGrid products={products}/>
-        </div>
-    </>
+            <title>Ecommerce-project</title>
+            <link rel="icon" type="image/png" href="/images/home-favicon.png" />
+            <Header carts={carts} />
+            <div className="home-page">
+                <ProductsGrid products={products} />
+            </div>
+        </>
     )
 }
