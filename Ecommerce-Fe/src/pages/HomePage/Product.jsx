@@ -62,7 +62,6 @@ export function Product({ product, loadCartsData }) {
                 <img src={CheckMarkIcon} />
                 Added
             </div>
-            {console.log(quantity)}
             <button className="add-to-cart-button button-primary"
                 onClick={handleButtonAddCart}>
                 Add to Cart

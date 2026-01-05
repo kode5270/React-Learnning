@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { formatMoney } from '../../utils/money';
 import { DeliveryOption } from './deliveryOption';
+import axios from 'axios';
 
 export function OrderSummary({ carts, deliveryOptions, loadCartsData}) {
     return (
@@ -8,7 +9,19 @@ export function OrderSummary({ carts, deliveryOptions, loadCartsData}) {
             {deliveryOptions.length > 0 && carts.map((cartItem) => {
                 const selectedDeliveryOption = deliveryOptions.find((deliveryOption) => {
                     return deliveryOption.id === cartItem.deliveryOptionId;
-                })
+                });
+                const handleupdateCartItem = async () => {
+                    await axios.put(`/api/cart-items/${cartItem.productId}`,{
+                        quantity : Number(cartItem.quantity += 1),
+                        deliveryOptionId :String(cartItem.deliveryOptionId)
+                    });
+                    await loadCartsData();
+                }
+                const handleDeleteCartItem = async () => {
+                    await axios.delete(`/api/cart-items/${cartItem.productId}`);
+                    await loadCartsData();
+                };
+
                 return (
                     <div key={cartItem.productId} className="cart-item-container">
                         <div className="delivery-date">
@@ -30,10 +43,12 @@ export function OrderSummary({ carts, deliveryOptions, loadCartsData}) {
                                     <span>
                                         Quantity: <span className="quantity-label">{cartItem.quantity}</span>
                                     </span>
-                                    <span className="update-quantity-link link-primary">
+                                    <span className="update-quantity-link link-primary"
+                                        onClick={handleupdateCartItem}>
                                         Update
                                     </span>
-                                    <span className="delete-quantity-link link-primary">
+                                    <span className="delete-quantity-link link-primary"
+                                        onClick={handleDeleteCartItem}>
                                         Delete
                                     </span>
                                 </div>
