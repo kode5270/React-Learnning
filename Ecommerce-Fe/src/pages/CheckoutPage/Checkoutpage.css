@@ -212,3 +212,10 @@
 .checkout-page .quantity-input {
     width: 50px;
 }
+.checkout-page .product-quantity{
+  display: flex;
+  flex-direction: column;
+  margin: 4px;
+  gap: 2px;
+  
+}
