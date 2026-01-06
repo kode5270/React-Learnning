@@ -6,9 +6,10 @@ import { OrderHeader } from './OrderHeader'
 import  { OrderDetail} from './OrderDetail'
 
 
-export function OrdersPage({ carts }) {
+export function OrdersPage({ carts , loadCartsData}) {
     const [orders, setOrders] = useState([])
-
+    window.axios = axios;
+    console.log(axios.post('/api/reset'))
     useEffect(() => {
         const fetchOrderData = async () => {
             const response = await axios.get('/api/orders?expand=products')
@@ -32,7 +33,7 @@ export function OrdersPage({ carts }) {
                         <div className="order-container" key={order.id}>
                             <OrderHeader order={order}/> 
                             
-                            <OrderDetail order={order}/>
+                            <OrderDetail order={order} loadCartsData={loadCartsData}/>
                             
                         </div>)
                     

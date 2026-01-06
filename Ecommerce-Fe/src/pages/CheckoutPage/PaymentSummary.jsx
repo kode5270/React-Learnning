@@ -6,7 +6,7 @@ import { useNavigate } from "react-router"
 export function PaymentSummary ( { loadCartsData, paymentSummary } ) {
     const navigate = useNavigate();
     
-    const handleUpdateOrder = async () =>{
+    const handleCreateOrder = async () =>{
         await axios.post(`/api/orders`);
         await loadCartsData();
         navigate('/orders');
@@ -46,7 +46,7 @@ export function PaymentSummary ( { loadCartsData, paymentSummary } ) {
                     </div>
 
                     <button className="place-order-button button-primary"
-                        onClick={handleUpdateOrder}>
+                        onClick={handleCreateOrder}>
                         Place your order
                     </button>
                 </>
