@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { formatMoney } from "../../utils/money";
 import axios from 'axios';
+import { DeliveryOption } from "./deliveryOption";
 export function CartItem({ cartItem , loadCartsData }) {
     const [quantityInputText, setQuantityInputText]= useState(false)
+    const [quantity, setQuantity] = useState(0)
     const handleupdateCartItem = async () => {
-        setQuantityInputText(true)
+        setQuantityInputText(true);
+        if(quantityInputText ===true){
+        await axios.put(`/api/cart-items/${cartItem.productId}`,{
+            quantity : quantity,
+        })
     }
+        await loadCartsData();
+
+    }
+    
     const handleDeleteCartItem = async () => {
         await axios.delete(`/api/cart-items/${cartItem.productId}`);
         await loadCartsData();
@@ -20,7 +30,23 @@ export function CartItem({ cartItem , loadCartsData }) {
             </div>
             <div className="product-quantity">
                 <span>
-                    Quantity:  <span className="quantity-label">{quantityInputText ?  <input className="quantity-input" type="text" /> : cartItem.quantity}</span>
+                    Quantity:  <span className="quantity-label">{
+                    quantityInputText === true ?  <input className="quantity-input" 
+                                                type="text" 
+                                                value={quantity}
+                                                onChange={(e) => {
+                                                    setQuantity(Number(e.target.value));
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    if(e.key === 'Enter') {
+                                                        handleupdateCartItem()
+                                                        setQuantityInputText(false)
+                                                    }
+                                                    else if (e.key === 'Escape'){
+                                                        setQuantityInputText(false)
+                                                    }
+                                                }}/> 
+                                          : cartItem.quantity}</span>
                 </span>
                 <span className="update-quantity-link link-primary"
                     onClick={handleupdateCartItem}>

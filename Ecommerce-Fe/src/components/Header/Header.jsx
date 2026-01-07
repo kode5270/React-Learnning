@@ -1,12 +1,15 @@
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useNavigate } from 'react-router'
 import  './header.css'
 import SearchIcon from '../../assets/images/icons/search-icon.png'
 import CartIcon from '../../assets/images/icons/cart-icon.png'
 import LogoWhiteImage from '../../assets/images/logo-white.png'
 import MobileLogoWhiteImage from '../../assets/images/mobile-logo-white.png'
+import { useState } from 'react'
 
 
 export function Header ({carts}) {
+    const [ searchText, setSearchText] = useState(''); 
+    const navigate = useNavigate();
     return (
         <div className="header">
             <div className="left-section">
@@ -19,9 +22,26 @@ export function Header ({carts}) {
             </div>
 
             <div className="middle-section">
-                <input className="search-bar" type="text" placeholder="Search" />
+                <input className="search-bar" 
+                       type="text" 
+                       placeholder="Search" 
+                       value={searchText}
+                       onChange={(e) =>{
+                            setSearchText(e.target.value)
+                       }}
+                       onKeyDown={(e) => {
+                        if(e.key === 'Enter') {
+                            navigate(`/?search=${searchText}`)
+                            setSearchText('')
+                        }
+                        else if(e.key === 'Escape'){
+                            setSearchText('')
+                        }
+                       }} />
 
-                <button className="search-button">
+                <button className="search-button" onClick={() => {
+                    navigate(`/?search=${searchText}`)
+                }}>
                 <img className="search-icon" src={SearchIcon} />
                 </button>
             </div>
