@@ -10,6 +10,10 @@ import { useState } from 'react'
 export function Header ({carts}) {
     const [ searchText, setSearchText] = useState(''); 
     const navigate = useNavigate();
+    let totalQuantity = 0;
+    carts?.forEach((cartItem) => {
+        Number(totalQuantity += cartItem.quantity);
+    })
     return (
         <div className="header">
             <div className="left-section">
@@ -53,7 +57,7 @@ export function Header ({carts}) {
                 </NavLink>
                 <NavLink className="cart-link header-link" to="/checkout">
                 <img className="cart-icon" src={CartIcon} />
-                <div className="cart-quantity">{carts.reduce((sum,item) => sum+=item.quantity, 0)}</div>
+                <div className="cart-quantity">{totalQuantity}</div>
                 <div className="cart-text">Cart</div>
                 </NavLink>
             </div>
